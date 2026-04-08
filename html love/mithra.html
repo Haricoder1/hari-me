@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Mithra ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: Georgia, serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* fade effect */
+.fade {
+    animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* start screen */
+#startScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 💓 heartbeat button */
+#startBtn {
+    padding: 15px 30px;
+    font-size: 20px;
+    border-radius: 50px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px #ff4d6d; }
+    50% { transform: scale(1.1); box-shadow: 0 0 25px #ff4d6d; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #ff4d6d; }
+}
+
+/* container */
+#container {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 📸 carousel */
+.gallery {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.gallery img {
+    width: 140px;
+    height: 200px;
+    border-radius: 15px;
+    object-fit: cover;
+    opacity: 0.5;
+    transform: scale(0.8);
+    transition: 0.5s;
+}
+
+.gallery img.active {
+    opacity: 1;
+    transform: scale(1.2);
+    box-shadow: 0 0 25px #ff4d6d;
+}
+
+/* text */
+#text {
+    font-size: 24px;
+    margin-top: 20px;
+    opacity: 0;
+    transition: 1.5s;
+}
+
+/* buttons */
+#buttons {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 25px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+}
+
+#noBtn {
+    background: #555;
+    color: white;
+    position: relative;
+}
+
+/* ❤️ hearts */
+.heart {
+    position: absolute;
+    color: red;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- START SCREEN -->
+<div id="startScreen">
+    <h1>For Mithra ❤️</h1>
+    <button id="startBtn" onclick="startExperience()">Start 💖</button>
+</div>
+
+<!-- MAIN -->
+<div id="container">
+    <h1>Mithra ❤️</h1>
+
+    <div class="gallery">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpeg">
+        <img src="photo4.jpeg">
+        <img src="photo5.jpeg">
+        <img src="photo6.jpeg">
+    </div>
+
+    <p id="text"></p>
+
+    <div id="buttons" style="display:none;">
+        <button id="yesBtn" onclick="yesClicked()">Yes ❤️</button>
+        <button id="noBtn" onmouseover="moveNo()">No 😜</button>
+    </div>
+</div>
+
+<audio id="music" loop>
+    <source src="theethiri.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ▶️ START EXPERIENCE
+function startExperience() {
+    document.getElementById("startScreen").style.display = "none";
+
+    const container = document.getElementById("container");
+    container.style.display = "block";
+    container.classList.add("fade");
+
+    document.getElementById("music").play();
+
+    setTimeout(startText, 1500);
+}
+
+// 💖 hearts
+setInterval(() => {
+    let h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+},300);
+
+// 📸 carousel
+let imgs = document.querySelectorAll(".gallery img");
+let i = 0;
+
+setInterval(()=>{
+    imgs.forEach(img=>img.classList.remove("active"));
+    imgs[i].classList.add("active");
+    i = (i+1)%imgs.length;
+},2000);
+
+// 💬 text
+const lines = [
+    "Mithra...",
+    "Na unna 9th la irruthu pakura....",
+    "Eanaku unna romba pidiku",
+    "I LOVE YOU...",
+    " Na unna kadhalicka oru vaipu taruvaya ❤️",
+    
+];
+
+let t = 0;
+
+function startText(){
+    showText();
+}
+
+function showText(){
+    if(t < lines.length){
+        let el = document.getElementById("text");
+        el.style.opacity = 0;
+
+        setTimeout(()=>{
+            el.innerHTML = lines[t];
+            el.style.opacity = 1;
+            t++;
+            setTimeout(showText, 2500); /* slower = emotional */
+        },700);
+    } else {
+        document.getElementById("buttons").style.display="block";
+    }
+}
+
+// ❤️ yes
+function yesClicked(){
+    document.body.innerHTML =
+    "<h1 style='margin-top:20%;'>You made me the happiest Mithra ❤️<br>— HARIVIKAS</h1>";
+}
+
+// 😜 no
+function moveNo(){
+    let btn = document.getElementById("noBtn");
+
+    // get screen size
+    let maxX = window.innerWidth - btn.offsetWidth - 20;
+    let maxY = window.innerHeight - btn.offsetHeight - 20;
+
+    // random position inside safe area
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
+    btn.style.position = "fixed";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+
+}
+</script>
+
+</body>
+</html>
